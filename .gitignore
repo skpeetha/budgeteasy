@@ -1,0 +1,7 @@
+*.csv
+*.txt
+*.pdf
+venv/
+playground.py
+__pycache__/
+chatgpt
