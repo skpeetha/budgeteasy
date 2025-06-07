@@ -58,6 +58,7 @@ def extract_transactions_from_text(text):
 
         if len(numeric_values) == 1:
             balance = numeric_values[0]
+            print(f"line:{line} balance:{balance}")
         elif len(numeric_values) == 2:
             amount, balance = map(float, numeric_values)
             if prev_balance is not None:

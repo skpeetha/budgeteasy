@@ -3,5 +3,5 @@
 *.pdf
 venv/
 playground.py
-__pycache__/
+*.pyc
 chatgpt
