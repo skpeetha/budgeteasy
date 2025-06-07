@@ -1,4 +1,5 @@
-from parser.parser import extract_text_from_pdf, extract_transactions_from_text, categorize_transaction
+from src.parser import extract_text_from_pdf, extract_transactions_from_text
+from src.categorize import categorize_transaction
 
 text = extract_text_from_pdf("eStatement250525140352407953489.pdf")
 
