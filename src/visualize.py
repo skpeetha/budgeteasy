@@ -1,19 +1,18 @@
-# visualize.py
+def plot_expense_pie(df, output_path=None):
+    import matplotlib.pyplot as plt
 
-import matplotlib.pyplot as plt
+    grouped = df.groupby('category')['withdrawal'].sum().dropna()
+    if grouped.empty:
+        return
 
-def plot_expense_pie(df):
-    # Filter only expenses
-    expense_df = df[df['withdrawal'].notnull()].copy()
-
-    # Group by category and sum expenses
-    category_totals = expense_df.groupby('category')['withdrawal'].sum()
-
-    # Plot pie chart
-    plt.figure(figsize=(8, 8))
-    plt.pie(category_totals, labels=category_totals.index, autopct='%1.1f%%', startangle=140)
-    plt.title('Spending by Category')
-    plt.axis('equal')  # Equal aspect ratio ensures pie is circular
-    plt.tight_layout()
-    plt.savefig('plot.png')
-    plt.show()
+    plt.figure(figsize=(6, 6))
+    plt.pie(grouped, labels=grouped.index, autopct='%1.1f%%', startangle=140)
+    plt.title('Expenses by Category')
+    if output_path:
+        try:
+            plt.savefig(output_path)
+        except Exception as e:
+            print(f"Error saving plot: {e}")
+    else:
+        plt.show()
+    plt.close()
