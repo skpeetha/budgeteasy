@@ -2,7 +2,7 @@
 
 import pytest
 import pandas as pd
-from parser.parser import extract_transactions_from_text
+from src.parser import extract_transactions_from_text
 
 @pytest.fixture
 def sample_text():
