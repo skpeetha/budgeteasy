@@ -28,13 +28,19 @@ def index():
 
             df = extract_transactions_from_text(text)
             df['category'] = df.apply(categorize_transactions, axis=1)
+            df = df.replace('\n', ' ', regex=True)
+            df = df.replace(r'\\n', ' ', regex=True)
+            print(df)
+            print(df.shape)
+            df = df.dropna(how='all')
+            df = df[~df.apply(lambda row: row.astype(str).str.strip().eq('').all(), axis=1)]
 
             static_dir = os.path.join(os.path.dirname(__file__), 'static')
             pie_path = os.path.join(static_dir, 'category_pie.png')
 
             plot_expense_pie(df, output_path=pie_path)
 
-            return render_template('index.html', tables=[df.to_html(classes='table table-striped', index=False)],
+            return render_template('index.html', tables=df.to_html(classes='table table-striped', index=False),
                                    pie_chart=url_for('static', filename='category_pie.png'))
         else:
             return "Please upload a valid PDF file."
