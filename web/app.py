@@ -28,14 +28,21 @@ def index():
 
             df = extract_transactions_from_text(text)
             df['category'] = df.apply(categorize_transactions, axis=1)
+            transactions = df.to_html(classes='table table-striped', index=False)
+            category_summary = df.groupby('category').agg({'withdrawal': 'sum'}).reset_index()
+            category_table = category_summary.to_html(classes='table table-bordered', index=False)
             
             static_dir = os.path.join(os.path.dirname(__file__), 'static')
             pie_path = os.path.join(static_dir, 'category_pie.png')
 
             plot_expense_pie(df, output_path=pie_path)
 
-            return render_template('index.html', tables=df.to_html(classes='table table-striped', index=False),
-                                   pie_chart=url_for('static', filename='category_pie.png'))
+            return render_template(
+                'index.html',
+                tables=transactions,
+                category_table=category_table,
+                pie_chart=url_for('static', filename='category_pie.png')
+            )
         else:
             return "Please upload a valid PDF file."
     return render_template('index.html')

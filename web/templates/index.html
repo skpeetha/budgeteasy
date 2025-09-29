@@ -16,7 +16,14 @@
 
     {% if pie_chart %}
         <h2>Category-wise Spending</h2>
-        <img src="{{ pie_chart }}" class="img-fluid mb-4" alt="Spending Pie Chart">
+        <div class="row mb-4">
+            <div class="col-md-6">
+                {{ category_table|safe }}
+            </div>
+            <div class="col-md-6">
+                <img src="{{ pie_chart }}" class="img-fluid" alt="Spending Pie Chart">
+            </div>
+        </div>
     {% endif %}
 
     {% if tables %}
