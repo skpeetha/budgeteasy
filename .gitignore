@@ -6,3 +6,5 @@ playground.py
 *.pyc
 *.png
 chatgpt
+__pycache__/
+*.db

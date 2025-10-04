@@ -4,12 +4,12 @@ sys.path.insert(0, '../')
 from flask import Flask, render_template, request, redirect, url_for
 from werkzeug.utils import secure_filename
 import os
-import fitz  # PyMuPDF
+import tempfile
+#import fitz  # PyMuPDF
 from src.parser import extract_transactions_from_text, extract_text_from_pdf
 from src.categorize import categorize_transactions
 from src.visualize import plot_expense_pie
-import tempfile
-import io
+from src.db import init_db
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = tempfile.gettempdir()
@@ -48,4 +48,5 @@ def index():
     return render_template('index.html')
 
 if __name__ == '__main__':
+    init_db()
     app.run(debug=True)
