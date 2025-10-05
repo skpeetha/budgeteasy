@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use('Agg') 
 def plot_expense_pie(df, output_path=None):
     import matplotlib.pyplot as plt
 
