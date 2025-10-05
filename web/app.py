@@ -21,12 +21,12 @@ def index():
     if request.method == "POST":
         if "file" not in request.files:
             flash("No file uploaded")
-            return redirect(request.url)
+            return redirect(url_for('index'))
 
         file = request.files["file"]
         if file.filename == "":
             flash("No file selected")
-            return redirect(request.url)
+            return redirect(url_for('index'))
 
         # Save uploaded file temporarily
         if file.filename and file.filename.lower().endswith('.pdf'):
@@ -35,7 +35,7 @@ def index():
             file.save(filepath)
         else:
             flash("Invalid file type. Please upload a PDF.")
-            return redirect(request.url)
+            return redirect(url_for('index'))
 
         # Calculate hash
         filehash = calculate_file_hash(filepath)
@@ -57,7 +57,7 @@ def index():
 
             if df.empty:
                 flash("No transactions found in statement.")
-                return redirect(request.url)
+                return redirect(url_for('index'))
 
             # Categorize
             df['category'] = df.apply(categorize_transactions, axis=1)
@@ -99,7 +99,7 @@ def index():
         except Exception as e:
             flash(f"Error processing file:\n{traceback.format_exc()}")
             print(traceback.format_exc())
-            return redirect(request.url)
+            return redirect(url_for('index'))
 
     return render_template("index.html")
 
