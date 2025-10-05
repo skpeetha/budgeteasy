@@ -1,0 +1,32 @@
+.table-container {
+  max-height: 400px;         /* or whatever fits your UI */
+  overflow-y: auto;          /* vertical scroll */
+  position: relative;
+}
+
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-container th,
+.table-container td {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+}
+
+.table-container th {
+  position: sticky;
+  top: 0;
+  background: #f8f8f8;       /* light background so header stands out */
+  z-index: 2;
+}
+
+/* Optional: alternate row coloring */
+.table-container tr:nth-child(even) td {
+  background: #fafafa;
+}
+.body { padding: 20px; }
+.data { margin-top: 20px; }
+.stats-box { margin-top: 20px; }
+.pie-chart { margin-top: 20px; }
