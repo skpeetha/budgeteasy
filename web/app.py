@@ -3,6 +3,8 @@ import os
 from flask import Flask, render_template, request, redirect, url_for, flash
 import pandas as pd
 import traceback
+import tempfile
+from werkzeug.utils import secure_filename
 
 from src.parser import extract_transactions_from_text, extract_text_from_pdf, calculate_file_hash
 from src.categorize import categorize_transactions
@@ -11,10 +13,8 @@ from src.db import init_db, insert_statement, insert_transactions, get_statement
 
 app = Flask(__name__)
 app.secret_key = "supersecretkey"  # Needed for flash messages
-
-UPLOAD_FOLDER = "uploads"
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
+app.config['UPLOAD_FOLDER'] = tempfile.gettempdir()
+app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024  # Max 10MB
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -29,8 +29,13 @@ def index():
             return redirect(request.url)
 
         # Save uploaded file temporarily
-        filepath = os.path.join(UPLOAD_FOLDER, file.filename)
-        file.save(filepath)
+        if file.filename and file.filename.lower().endswith('.pdf'):
+            filename = secure_filename(file.filename)
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(filepath)
+        else:
+            flash("Invalid file type. Please upload a PDF.")
+            return redirect(request.url)
 
         # Calculate hash
         filehash = calculate_file_hash(filepath)
@@ -97,7 +102,6 @@ def index():
             return redirect(request.url)
 
     return render_template("index.html")
-
 
 if __name__ == "__main__":
     init_db()  # ensure DB schema exists at startup
